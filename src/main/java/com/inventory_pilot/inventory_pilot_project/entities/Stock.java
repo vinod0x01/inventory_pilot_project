@@ -8,6 +8,8 @@ import lombok.NoArgsConstructor;
 import javax.persistence.*;
 import java.io.Serializable;
 
+/* Table Stock from database*/
+
 @Entity
 @Table(name = "stock")
 @Data

@@ -8,6 +8,8 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
+/* Repository for Product table */
+
 @Repository
 public interface ProductRepository extends JpaRepository<Product, Long> {
 }

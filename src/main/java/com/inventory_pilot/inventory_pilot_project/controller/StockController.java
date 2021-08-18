@@ -8,12 +8,14 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
+/*RestController class to get the Data by stock available*/
 @RestController
 public class StockController {
 
     @Autowired
     private StockServiceimpl stockServiceimpl;
 
+    /*Function for fetching the stock by service layer*/
     @GetMapping("/stocks")
     public List<Stock> fetchStocks(){
         return stockServiceimpl.fetchStocks();

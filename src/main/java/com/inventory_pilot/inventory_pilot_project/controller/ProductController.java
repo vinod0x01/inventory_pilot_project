@@ -9,13 +9,14 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
+/*RestController class to get the data by product*/
 @RestController
 public class ProductController {
 
     @Autowired
     private ProductServiceimpl productServiceimpl;
 
-    /* Functional API to fetch the Product details*/
+    /* Functional API to fetch the Product details by service layer*/
     @GetMapping("/productsOnly")
     public List<Product> fetchProducts() {
         return productServiceimpl.fetchProducts();

@@ -7,6 +7,8 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 
+/* Table Product from database*/
+
 @Entity
 @Table(name = "product")
 @Data

@@ -8,13 +8,14 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
+/*RestController to get the data by category*/
 @RestController
 public class CategoryController {
 
     @Autowired
     private CategoryService categoryService;
 
-    /*Function for returning the Category list on get apu call*/
+    /*Function for returning the Category list on get apu call by service layer*/
     @GetMapping("/category")
     public List<Category> fetchCategory(){
         return categoryService.fetchCategoryList();

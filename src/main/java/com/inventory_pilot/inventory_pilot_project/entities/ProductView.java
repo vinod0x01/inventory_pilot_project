@@ -10,6 +10,8 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+/* Creating view from tables */
+
 @Entity
 @Immutable
 @Subselect(""+

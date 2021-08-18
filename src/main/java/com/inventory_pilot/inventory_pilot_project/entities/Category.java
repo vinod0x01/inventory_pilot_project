@@ -4,6 +4,8 @@ import lombok.*;
 
 import javax.persistence.*;
 
+/* Table Category from database*/
+
 @Entity
 @Table(name = "category")
 @Data

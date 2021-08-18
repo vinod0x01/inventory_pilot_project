@@ -7,6 +7,8 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+/* Service class for view*/
+
 @Service
 public class ProductViewServiceimpl implements ProductViewService {
 
@@ -15,7 +17,7 @@ public class ProductViewServiceimpl implements ProductViewService {
 
     @Override
     public List<ProductView> fetchData(int offset) {
-        return null;
+        return productViewRepositoryimpl.fetchData(offset);
     }
 
     @Override

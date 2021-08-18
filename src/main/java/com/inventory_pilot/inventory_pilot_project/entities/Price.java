@@ -8,6 +8,8 @@ import lombok.NoArgsConstructor;
 import javax.persistence.*;
 import java.io.Serializable;
 
+/* Table Price from database*/
+
 @Entity
 @Table(name = "price")
 @Data

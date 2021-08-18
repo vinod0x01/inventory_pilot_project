@@ -4,6 +4,8 @@ import com.inventory_pilot.inventory_pilot_project.entities.ProductView;
 
 import java.util.List;
 
+/* Service interface for View*/
+
 public interface ProductViewService {
     List<ProductView> fetchData(int offset);
 
