@@ -13,7 +13,6 @@ import java.util.Locale;
 
 /*RestController class to get the Data from view created*/
 @RestController
-
 public class ProductViewController {
 
     @Autowired
