@@ -1,0 +1,11 @@
+.logo_class{
+  height: 10%;
+  width: 10%;
+  float: left;
+}
+
+.navbar-center {
+  position: absolute;
+  left: 50%;
+  transform: translatex(-50%);
+}
