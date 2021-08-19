@@ -1,0 +1,69 @@
+Queries
+
+For creating Entity category
+
+CREATE TABLE category
+(
+    category_code integer NOT NULL,
+    category_name VARCHAR,
+    CONSTRAINT category_pkey PRIMARY KEY (category_code)
+)
+
+For creating Entity Product
+
+CREATE TABLE public.product
+(
+    product_code VARCHAR NOT NULL,
+    product_description VARCHAR,
+    category integer,
+    CONSTRAINT product_pkey PRIMARY KEY (product_code),
+    CONSTRAINT fk_category FOREIGN KEY (category)
+        REFERENCES public.category (category_code)
+)
+
+For creating entity price
+
+CREATE TABLE public.price
+(
+    currency VARCHAR(5),
+    product_code VARCHAR,
+    price integer,
+    id integer NOT NULL GENERATED ALWAYS AS IDENTITY ( INCREMENT 1 START 1 MINVALUE 1 MAXVALUE 999999999),
+    CONSTRAINT product_fkey FOREIGN KEY (product_code)
+        REFERENCES public.product (product_code)
+)
+
+For creating entity stock
+
+CREATE TABLE public.stock
+(
+    location VARCHAR,
+    product_code VARCHAR,
+    inventery_available integer,
+    id integer NOT NULL GENERATED ALWAYS AS IDENTITY ( INCREMENT 1 START 1 MINVALUE 1 MAXVALUE 999999999),
+    CONSTRAINT product_fkey FOREIGN KEY (product_code)
+        REFERENCES public.product (product_code)
+)
+
+For creating View product_view
+
+CREATE OR REPLACE VIEW public.product_view
+ AS
+ SELECT pd.product_code,
+    pd.product_description,
+    ca.category_name,
+    pr.price,
+    pr.currency,
+    st.inventery_available,
+    st.location
+   FROM category ca
+     JOIN product pd ON ca.category_code = pd.category
+     LEFT JOIN price pr ON pr.product_code::text = pd.product_code::text
+     JOIN stock st ON st.product_code::text = pr.product_code::text;
+
+
+For fetching data from view
+
+SELECT * FROM product_view
+ORDER BY product_code ASC
+LIMIT 10 OFFSET 20

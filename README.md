@@ -10,6 +10,7 @@
 
 ### ER-Diagram
 ![sequency diagram image](./src/main/resources/public/static/images/ERDiagram.png)
+[Link to queries used](./src/main/resources/public/static/queries.txt)
 
 ### Sample view of website
 ![sequency diagram image](./src/main/resources/public/static/images/view_img.png)
