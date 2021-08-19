@@ -7,11 +7,13 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.math.BigInteger;
 import java.util.List;
 import java.util.Locale;
 
 /*RestController class to get the Data from view created*/
 @RestController
+
 public class ProductViewController {
 
     @Autowired
@@ -28,6 +30,11 @@ public class ProductViewController {
     public List<ProductView> fetchDataBy(@PathVariable String sort_param, @PathVariable String order,
                                          @PathVariable int offset){
         return productViewServiceimpl.filter_data(sort_param, order, offset);
+    }
+
+    @GetMapping("/getCounts")
+    public BigInteger get_counts(){
+        return productViewServiceimpl.get_counts();
     }
 
 }

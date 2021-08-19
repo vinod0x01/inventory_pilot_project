@@ -10,6 +10,7 @@ import org.springframework.stereotype.Repository;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import java.lang.annotation.Annotation;
+import java.math.BigInteger;
 import java.util.List;
 import java.util.Locale;
 
@@ -37,6 +38,10 @@ public class ProductViewRepositoryimpl{
         return (List<ProductView>) entityManager.createNativeQuery("select "+
                 column_list+" from product_view offset "+offset,
                 ProductView.class).setMaxResults(10).getResultList();
+    }
+
+    public BigInteger get_counts(){
+        return (BigInteger) entityManager.createNativeQuery("select count(product_code) from product_view").getSingleResult();
     }
 
 }
