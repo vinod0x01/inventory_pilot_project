@@ -1,0 +1,12 @@
+--> inventory_pilot_project Folder contains all the data
+
+
+Find required files inside
+    [ inventory_pilot_project/src/main/resources/public/static/ ]
+--> which include specified requirements
+
+
+In git-hub all required data is uploaded (please look at it)
+
+--> github repo Link : https://github.com/raita0100/inventory_pilot_project
+--> demonstration video : https://youtu.be/Wt7tWVSzfOk

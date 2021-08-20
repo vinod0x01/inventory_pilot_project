@@ -1,0 +1,359 @@
+--
+-- PostgreSQL database dump
+--
+
+-- Dumped from database version 13.3
+-- Dumped by pg_dump version 13.3
+
+-- Started on 2021-08-20 07:22:19 IST
+
+SET statement_timeout = 0;
+SET lock_timeout = 0;
+SET idle_in_transaction_session_timeout = 0;
+SET client_encoding = 'UTF8';
+SET standard_conforming_strings = on;
+SELECT pg_catalog.set_config('search_path', '', false);
+SET check_function_bodies = false;
+SET xmloption = content;
+SET client_min_messages = warning;
+SET row_security = off;
+
+--
+-- TOC entry 3286 (class 1262 OID 17169)
+-- Name: inventory; Type: DATABASE; Schema: -; Owner: postgres
+--
+
+CREATE DATABASE inventory WITH TEMPLATE = template0 ENCODING = 'UTF8' LOCALE = 'C';
+
+
+ALTER DATABASE inventory OWNER TO postgres;
+
+\connect inventory
+
+SET statement_timeout = 0;
+SET lock_timeout = 0;
+SET idle_in_transaction_session_timeout = 0;
+SET client_encoding = 'UTF8';
+SET standard_conforming_strings = on;
+SELECT pg_catalog.set_config('search_path', '', false);
+SET check_function_bodies = false;
+SET xmloption = content;
+SET client_min_messages = warning;
+SET row_security = off;
+
+--
+-- TOC entry 3287 (class 0 OID 0)
+-- Dependencies: 3286
+-- Name: DATABASE inventory; Type: COMMENT; Schema: -; Owner: postgres
+--
+
+COMMENT ON DATABASE inventory IS 'Pilot_project_database';
+
+
+SET default_tablespace = '';
+
+SET default_table_access_method = heap;
+
+--
+-- TOC entry 200 (class 1259 OID 17186)
+-- Name: category; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.category (
+    category_code integer NOT NULL,
+    category_name character varying
+);
+
+
+ALTER TABLE public.category OWNER TO postgres;
+
+--
+-- TOC entry 202 (class 1259 OID 17213)
+-- Name: price; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.price (
+    currency character varying(5),
+    product_code character varying,
+    price integer,
+    id integer NOT NULL
+);
+
+
+ALTER TABLE public.price OWNER TO postgres;
+
+--
+-- TOC entry 204 (class 1259 OID 17244)
+-- Name: price_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+ALTER TABLE public.price ALTER COLUMN id ADD GENERATED ALWAYS AS IDENTITY (
+    SEQUENCE NAME public.price_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    MAXVALUE 999999999
+    CACHE 1
+);
+
+
+--
+-- TOC entry 201 (class 1259 OID 17194)
+-- Name: product; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.product (
+    product_code character varying NOT NULL,
+    product_description character varying,
+    category integer
+);
+
+
+ALTER TABLE public.product OWNER TO postgres;
+
+--
+-- TOC entry 203 (class 1259 OID 17224)
+-- Name: stock; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.stock (
+    location character varying,
+    product_code character varying,
+    inventery_available integer,
+    id integer NOT NULL
+);
+
+
+ALTER TABLE public.stock OWNER TO postgres;
+
+--
+-- TOC entry 206 (class 1259 OID 17264)
+-- Name: product_view; Type: VIEW; Schema: public; Owner: postgres
+--
+
+CREATE VIEW public.product_view AS
+ SELECT pd.product_code,
+    pd.product_description,
+    ca.category_name,
+    pr.price,
+    pr.currency,
+    st.inventery_available,
+    st.location
+   FROM (((public.category ca
+     JOIN public.product pd ON ((ca.category_code = pd.category)))
+     LEFT JOIN public.price pr ON (((pr.product_code)::text = (pd.product_code)::text)))
+     JOIN public.stock st ON (((st.product_code)::text = (pr.product_code)::text)));
+
+
+ALTER TABLE public.product_view OWNER TO postgres;
+
+--
+-- TOC entry 205 (class 1259 OID 17252)
+-- Name: stock_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+ALTER TABLE public.stock ALTER COLUMN id ADD GENERATED ALWAYS AS IDENTITY (
+    SEQUENCE NAME public.stock_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    MAXVALUE 999999999
+    CACHE 1
+);
+
+
+--
+-- TOC entry 3275 (class 0 OID 17186)
+-- Dependencies: 200
+-- Data for Name: category; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+INSERT INTO public.category (category_code, category_name) VALUES (1000, 'Classroom');
+INSERT INTO public.category (category_code, category_name) VALUES (2000, 'Blue');
+INSERT INTO public.category (category_code, category_name) VALUES (4000, 'Clips');
+INSERT INTO public.category (category_code, category_name) VALUES (3000, 'Postcard');
+INSERT INTO public.category (category_code, category_name) VALUES (5000, 'Bag');
+
+
+--
+-- TOC entry 3277 (class 0 OID 17213)
+-- Dependencies: 202
+-- Data for Name: price; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+INSERT INTO public.price (currency, product_code, price, id) OVERRIDING SYSTEM VALUE VALUES ('USD', 'P116871', 10, 1);
+INSERT INTO public.price (currency, product_code, price, id) OVERRIDING SYSTEM VALUE VALUES ('USD', 'P118253', 11, 2);
+INSERT INTO public.price (currency, product_code, price, id) OVERRIDING SYSTEM VALUE VALUES ('USD', 'P133070DLS', 20, 3);
+INSERT INTO public.price (currency, product_code, price, id) OVERRIDING SYSTEM VALUE VALUES ('USD', 'P140388', 13, 4);
+INSERT INTO public.price (currency, product_code, price, id) OVERRIDING SYSTEM VALUE VALUES ('USD', 'P117229', 14, 5);
+INSERT INTO public.price (currency, product_code, price, id) OVERRIDING SYSTEM VALUE VALUES ('USD', 'P126357', 15, 6);
+INSERT INTO public.price (currency, product_code, price, id) OVERRIDING SYSTEM VALUE VALUES ('USD', 'P119405', 30, 7);
+INSERT INTO public.price (currency, product_code, price, id) OVERRIDING SYSTEM VALUE VALUES ('USD', 'P130398', 31, 8);
+INSERT INTO public.price (currency, product_code, price, id) OVERRIDING SYSTEM VALUE VALUES ('USD', 'P139737', 32, 9);
+INSERT INTO public.price (currency, product_code, price, id) OVERRIDING SYSTEM VALUE VALUES ('USD', 'P125437', 33, 10);
+INSERT INTO public.price (currency, product_code, price, id) OVERRIDING SYSTEM VALUE VALUES ('USD', 'P116273', 34, 11);
+INSERT INTO public.price (currency, product_code, price, id) OVERRIDING SYSTEM VALUE VALUES ('USD', 'P129475DLS', 21, 12);
+INSERT INTO public.price (currency, product_code, price, id) OVERRIDING SYSTEM VALUE VALUES ('USD', 'P121824', 58, 13);
+INSERT INTO public.price (currency, product_code, price, id) OVERRIDING SYSTEM VALUE VALUES ('USD', 'P118932', 23, 14);
+INSERT INTO public.price (currency, product_code, price, id) OVERRIDING SYSTEM VALUE VALUES ('USD', 'P114411', 24, 15);
+INSERT INTO public.price (currency, product_code, price, id) OVERRIDING SYSTEM VALUE VALUES ('USD', 'P129361DLS', 50, 16);
+INSERT INTO public.price (currency, product_code, price, id) OVERRIDING SYSTEM VALUE VALUES ('USD', 'P132507', 54, 17);
+INSERT INTO public.price (currency, product_code, price, id) OVERRIDING SYSTEM VALUE VALUES ('USD', 'P100WS205', 21, 18);
+INSERT INTO public.price (currency, product_code, price, id) OVERRIDING SYSTEM VALUE VALUES ('USD', 'P113100', 53, 19);
+INSERT INTO public.price (currency, product_code, price, id) OVERRIDING SYSTEM VALUE VALUES ('INR', 'P119405', 100, 20);
+INSERT INTO public.price (currency, product_code, price, id) OVERRIDING SYSTEM VALUE VALUES ('INR', 'P130398', 101, 21);
+INSERT INTO public.price (currency, product_code, price, id) OVERRIDING SYSTEM VALUE VALUES ('INR', 'P139737', 102, 22);
+INSERT INTO public.price (currency, product_code, price, id) OVERRIDING SYSTEM VALUE VALUES ('INR', 'P125437', 600, 23);
+INSERT INTO public.price (currency, product_code, price, id) OVERRIDING SYSTEM VALUE VALUES ('INR', 'P116273', 104, 24);
+INSERT INTO public.price (currency, product_code, price, id) OVERRIDING SYSTEM VALUE VALUES ('INR', 'P129475DLS', 100, 25);
+INSERT INTO public.price (currency, product_code, price, id) OVERRIDING SYSTEM VALUE VALUES ('INR', 'P121824', 500, 26);
+INSERT INTO public.price (currency, product_code, price, id) OVERRIDING SYSTEM VALUE VALUES ('INR', 'P118932', 501, 27);
+INSERT INTO public.price (currency, product_code, price, id) OVERRIDING SYSTEM VALUE VALUES ('INR', 'P114411', 700, 28);
+INSERT INTO public.price (currency, product_code, price, id) OVERRIDING SYSTEM VALUE VALUES ('INR', 'P129361DLS', 987, 29);
+INSERT INTO public.price (currency, product_code, price, id) OVERRIDING SYSTEM VALUE VALUES ('INR', 'P132507', 51, 30);
+INSERT INTO public.price (currency, product_code, price, id) OVERRIDING SYSTEM VALUE VALUES ('INR', 'P100WS205', 433, 31);
+INSERT INTO public.price (currency, product_code, price, id) OVERRIDING SYSTEM VALUE VALUES ('INR', 'P113100', 234, 32);
+
+
+--
+-- TOC entry 3276 (class 0 OID 17194)
+-- Dependencies: 201
+-- Data for Name: product; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+INSERT INTO public.product (product_code, product_description, category) OVERRIDING SYSTEM VALUE VALUES ('P116871', 'Return Sweep EZC Reader', 1000);
+INSERT INTO public.product (product_code, product_description, category) OVERRIDING SYSTEM VALUE VALUES ('P118253', 'EZC Reader  Blue', 2000);
+INSERT INTO public.product (product_code, product_description, category) OVERRIDING SYSTEM VALUE VALUES ('P133070DLS', 'Interlocking Hearts Pencil', 2000);
+INSERT INTO public.product (product_code, product_description, category) OVERRIDING SYSTEM VALUE VALUES ('P140388', 'Welcome To School Bag Kit', 4000);
+INSERT INTO public.product (product_code, product_description, category) OVERRIDING SYSTEM VALUE VALUES ('P117229', 'Ceiling Hanglers', 2000);
+INSERT INTO public.product (product_code, product_description, category) OVERRIDING SYSTEM VALUE VALUES ('P126357', 'Love Bug Pencil Holder', 2000);
+INSERT INTO public.product (product_code, product_description, category) OVERRIDING SYSTEM VALUE VALUES ('P119405', 'Collage Letters 9-Inch', 5000);
+INSERT INTO public.product (product_code, product_description, category) OVERRIDING SYSTEM VALUE VALUES ('P130398', 'Write Again Dry Erase Boards   Set of 12', 1000);
+INSERT INTO public.product (product_code, product_description, category) OVERRIDING SYSTEM VALUE VALUES ('P139737', 'Stikki Clips', 1000);
+INSERT INTO public.product (product_code, product_description, category) OVERRIDING SYSTEM VALUE VALUES ('P125437', 'Write Again Erasers', 1000);
+INSERT INTO public.product (product_code, product_description, category) OVERRIDING SYSTEM VALUE VALUES ('P116273', 'Welcome Postcard', 3000);
+INSERT INTO public.product (product_code, product_description, category) OVERRIDING SYSTEM VALUE VALUES ('P129475DLS', 'Royal Crowns', 3000);
+INSERT INTO public.product (product_code, product_description, category) OVERRIDING SYSTEM VALUE VALUES ('P121824', 'Collage Letters 9-Inch', 1000);
+INSERT INTO public.product (product_code, product_description, category) OVERRIDING SYSTEM VALUE VALUES ('P118932', 'Seasonal Stickers Assortment with Storage Box', 1000);
+INSERT INTO public.product (product_code, product_description, category) OVERRIDING SYSTEM VALUE VALUES ('P114411', 'Return Sweep EZC Reader', 4000);
+INSERT INTO public.product (product_code, product_description, category) OVERRIDING SYSTEM VALUE VALUES ('P129361DLS', 'EZC Reader  Blue', 4000);
+INSERT INTO public.product (product_code, product_description, category) OVERRIDING SYSTEM VALUE VALUES ('P132507', 'Interlocking Hearts Pencil', 5000);
+INSERT INTO public.product (product_code, product_description, category) OVERRIDING SYSTEM VALUE VALUES ('P100WS205', 'Welcome To School Bag Kit', 4000);
+INSERT INTO public.product (product_code, product_description, category) OVERRIDING SYSTEM VALUE VALUES ('P113100', 'Ceiling Hanglers', 4000);
+
+
+--
+-- TOC entry 3278 (class 0 OID 17224)
+-- Dependencies: 203
+-- Data for Name: stock; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+INSERT INTO public.stock (location, product_code, inventery_available, id) OVERRIDING SYSTEM VALUE VALUES ('USA', 'P116871', 101, 1);
+INSERT INTO public.stock (location, product_code, inventery_available, id) OVERRIDING SYSTEM VALUE VALUES ('USA', 'P118253', 99, 2);
+INSERT INTO public.stock (location, product_code, inventery_available, id) OVERRIDING SYSTEM VALUE VALUES ('USA', 'P133070DLS', 101, 3);
+INSERT INTO public.stock (location, product_code, inventery_available, id) OVERRIDING SYSTEM VALUE VALUES ('USA', 'P140388', 1, 4);
+INSERT INTO public.stock (location, product_code, inventery_available, id) OVERRIDING SYSTEM VALUE VALUES ('USA', 'P117229', 101, 5);
+INSERT INTO public.stock (location, product_code, inventery_available, id) OVERRIDING SYSTEM VALUE VALUES ('USA', 'P126357', 101, 6);
+INSERT INTO public.stock (location, product_code, inventery_available, id) OVERRIDING SYSTEM VALUE VALUES ('USA', 'P119405', 10000, 7);
+INSERT INTO public.stock (location, product_code, inventery_available, id) OVERRIDING SYSTEM VALUE VALUES ('USA', 'P130398', 101, 8);
+INSERT INTO public.stock (location, product_code, inventery_available, id) OVERRIDING SYSTEM VALUE VALUES ('USA', 'P139737', 874, 9);
+INSERT INTO public.stock (location, product_code, inventery_available, id) OVERRIDING SYSTEM VALUE VALUES ('USA', 'P125437', 101, 10);
+INSERT INTO public.stock (location, product_code, inventery_available, id) OVERRIDING SYSTEM VALUE VALUES ('USA', 'P116273', 25, 11);
+INSERT INTO public.stock (location, product_code, inventery_available, id) OVERRIDING SYSTEM VALUE VALUES ('USA', 'P129475DLS', 101, 12);
+INSERT INTO public.stock (location, product_code, inventery_available, id) OVERRIDING SYSTEM VALUE VALUES ('USA', 'P121824', 101, 13);
+INSERT INTO public.stock (location, product_code, inventery_available, id) OVERRIDING SYSTEM VALUE VALUES ('USA', 'P118932', 5, 14);
+INSERT INTO public.stock (location, product_code, inventery_available, id) OVERRIDING SYSTEM VALUE VALUES ('USA', 'P114411', 101, 15);
+INSERT INTO public.stock (location, product_code, inventery_available, id) OVERRIDING SYSTEM VALUE VALUES ('USA', 'P129361DLS', 101, 16);
+INSERT INTO public.stock (location, product_code, inventery_available, id) OVERRIDING SYSTEM VALUE VALUES ('USA', 'P132507', 101, 17);
+INSERT INTO public.stock (location, product_code, inventery_available, id) OVERRIDING SYSTEM VALUE VALUES ('USA', 'P100WS205', 3, 18);
+INSERT INTO public.stock (location, product_code, inventery_available, id) OVERRIDING SYSTEM VALUE VALUES ('USA', 'P113100', 0, 19);
+INSERT INTO public.stock (location, product_code, inventery_available, id) OVERRIDING SYSTEM VALUE VALUES ('INDIA', 'P116871', 344, 20);
+INSERT INTO public.stock (location, product_code, inventery_available, id) OVERRIDING SYSTEM VALUE VALUES ('INDIA', 'P118253', 99, 21);
+INSERT INTO public.stock (location, product_code, inventery_available, id) OVERRIDING SYSTEM VALUE VALUES ('INDIA', 'P133070DLS', 101, 22);
+INSERT INTO public.stock (location, product_code, inventery_available, id) OVERRIDING SYSTEM VALUE VALUES ('INDIA', 'P140388', 1, 23);
+INSERT INTO public.stock (location, product_code, inventery_available, id) OVERRIDING SYSTEM VALUE VALUES ('INDIA', 'P117229', 101, 24);
+INSERT INTO public.stock (location, product_code, inventery_available, id) OVERRIDING SYSTEM VALUE VALUES ('INDIA', 'P126357', 101, 25);
+INSERT INTO public.stock (location, product_code, inventery_available, id) OVERRIDING SYSTEM VALUE VALUES ('INDIA', 'P119405', 1, 26);
+INSERT INTO public.stock (location, product_code, inventery_available, id) OVERRIDING SYSTEM VALUE VALUES ('INDIA', 'P130398', 101, 27);
+INSERT INTO public.stock (location, product_code, inventery_available, id) OVERRIDING SYSTEM VALUE VALUES ('INDIA', 'P139737', 874, 28);
+INSERT INTO public.stock (location, product_code, inventery_available, id) OVERRIDING SYSTEM VALUE VALUES ('INDIA', 'P125437', 101, 29);
+INSERT INTO public.stock (location, product_code, inventery_available, id) OVERRIDING SYSTEM VALUE VALUES ('INDIA', 'P116273', 0, 30);
+INSERT INTO public.stock (location, product_code, inventery_available, id) OVERRIDING SYSTEM VALUE VALUES ('INDIA', 'P129475DLS', 101, 31);
+INSERT INTO public.stock (location, product_code, inventery_available, id) OVERRIDING SYSTEM VALUE VALUES ('INDIA', 'P121824', 65, 32);
+INSERT INTO public.stock (location, product_code, inventery_available, id) OVERRIDING SYSTEM VALUE VALUES ('INDIA', 'P118932', 500, 33);
+INSERT INTO public.stock (location, product_code, inventery_available, id) OVERRIDING SYSTEM VALUE VALUES ('INDIA', 'P114411', 101, 34);
+INSERT INTO public.stock (location, product_code, inventery_available, id) OVERRIDING SYSTEM VALUE VALUES ('INDIA', 'P129361DLS', 4, 35);
+INSERT INTO public.stock (location, product_code, inventery_available, id) OVERRIDING SYSTEM VALUE VALUES ('INDIA', 'P132507', 101, 36);
+INSERT INTO public.stock (location, product_code, inventery_available, id) OVERRIDING SYSTEM VALUE VALUES ('INDIA', 'P100WS205', 3, 37);
+INSERT INTO public.stock (location, product_code, inventery_available, id) OVERRIDING SYSTEM VALUE VALUES ('INDIA', 'P113100', 0, 38);
+
+
+--
+-- TOC entry 3288 (class 0 OID 0)
+-- Dependencies: 204
+-- Name: price_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.price_id_seq', 32, true);
+
+
+--
+-- TOC entry 3289 (class 0 OID 0)
+-- Dependencies: 205
+-- Name: stock_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.stock_id_seq', 38, true);
+
+
+--
+-- TOC entry 3138 (class 2606 OID 17193)
+-- Name: category category_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.category
+    ADD CONSTRAINT category_pkey PRIMARY KEY (category_code);
+
+
+--
+-- TOC entry 3140 (class 2606 OID 17201)
+-- Name: product product_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.product
+    ADD CONSTRAINT product_pkey PRIMARY KEY (product_code);
+
+
+--
+-- TOC entry 3141 (class 2606 OID 17202)
+-- Name: product fk_category; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.product
+    ADD CONSTRAINT fk_category FOREIGN KEY (category) REFERENCES public.category(category_code);
+
+
+--
+-- TOC entry 3142 (class 2606 OID 17219)
+-- Name: price product_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.price
+    ADD CONSTRAINT product_fkey FOREIGN KEY (product_code) REFERENCES public.product(product_code);
+
+
+--
+-- TOC entry 3143 (class 2606 OID 17230)
+-- Name: stock product_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.stock
+    ADD CONSTRAINT product_fkey FOREIGN KEY (product_code) REFERENCES public.product(product_code);
+
+
+-- Completed on 2021-08-20 07:22:19 IST
+
+--
+-- PostgreSQL database dump complete
+--
+
