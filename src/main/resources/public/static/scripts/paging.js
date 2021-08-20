@@ -106,7 +106,7 @@ function go_to_page(n){
     Logic for getting offset for data based on page number
   */
   curr_page = parseInt(n);
-  offset = (curr_page-1)*10 + 1;
+  offset = (curr_page-1)*10;
   /*
     fetch data from that offset and display
   */
@@ -130,7 +130,7 @@ function next_slide(){
   let curr_slide = Math.ceil(curr_page/4);
   curr_page = 4*(curr_slide)+1;
   if (curr_page < pages){
-    offset = ((curr_page-1)*10)+1;
+    offset = ((curr_page-1)*10);
   }
   else {
     offset = Math.floor(total_counts/10)*10;
@@ -156,10 +156,10 @@ function previous_slide(){
   let curr_slide = Math.ceil(curr_page/4);
   curr_page = 4*(curr_slide-1);
   if (curr_page > 0){
-    offset = ((curr_page-1)*10)+1;
+    offset = ((curr_page-1)*10);
   }
   else {
-    offset = 1;
+    offset = 0;
     curr_page = 1;
   }
 
